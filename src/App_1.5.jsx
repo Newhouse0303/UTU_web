@@ -16,11 +16,11 @@ const Content = ({ course }) => {
   );
 };
 
-const Part = ({ name, exercises }) => {
+const Part = (props) => {
   return (
     <div>
       <p>
-        {name} {exercises}
+        {props.name} {props.exercises}
       </p>
     </div>
   );
