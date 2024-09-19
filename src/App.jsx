@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useEffect } from "react";
+import axios from "axios";
 
 const Numbers = ({ persons }) => {
   return (
     <div>
       {persons.map((person) => (
-        <p key={new Date()}>
+        <p key={person.id}>
           {person.name} {person.number}
         </p>
       ))}
@@ -13,11 +15,18 @@ const Numbers = ({ persons }) => {
 };
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: "Arto Hellas", number: 12345678 },
-  ]);
+  const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
+
+  useEffect(() => {
+    console.log("effect");
+    axios.get("http://localhost:3001/persons").then((response) => {
+      console.log("promise fulfilled");
+      setPersons(response.data);
+    });
+  }, []);
+  console.log("render", persons.length, "persons");
 
   const handleNameChange = (e) => {
     setNewName(e.target.value);
