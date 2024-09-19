@@ -19,6 +19,21 @@
       "name": "Mary Poppendieck",
       "number": "39-23-6423122",
       "id": "4"
+    },
+    {
+      "id": "ad41",
+      "name": "Kalle Virtanen ",
+      "number": "7806-789"
+    },
+    {
+      "id": "9021",
+      "name": "Aino Laine",
+      "number": "34235-6467"
+    },
+    {
+      "id": "95f1",
+      "name": "Liisa Laine",
+      "number": "4534-4523"
     }
   ]
 }
