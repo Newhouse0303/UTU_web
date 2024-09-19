@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
-import personsService from "./services/persons";
 
 const Numbers = ({ persons }) => {
   return (
@@ -21,19 +20,13 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
 
   useEffect(() => {
-    personsService.getAll().then((response) => {
+    console.log("effect");
+    axios.get("http://localhost:3001/persons").then((response) => {
+      console.log("promise fulfilled");
       setPersons(response.data);
     });
   }, []);
-
-  // useEffect(() => {
-  //   console.log("effect");
-  //   axios.get("http://localhost:3001/persons").then((response) => {
-  //     console.log("promise fulfilled");
-  //     setPersons(response.data);
-  //   });
-  // }, []);
-  // console.log("render", persons.length, "persons");
+  console.log("render", persons.length, "persons");
 
   const handleNameChange = (e) => {
     setNewName(e.target.value);
@@ -59,16 +52,11 @@ const App = () => {
       number: newNumber,
     };
 
-    personsService.create(personObject).then((response) => {
-      setPersons(persons.concat(personObject));
-      setNewName("");
-    });
-
-    // axios
-    //   .post("http://localhost:3001/persons", personObject)
-    //   .then((response) => {
-    //     setPersons(persons.concat(personObject));
-    //   });
+    axios
+      .post("http://localhost:3001/persons", personObject)
+      .then((response) => {
+        setPersons(persons.concat(personObject));
+      });
 
     //setPersons(persons.concat(personObject));
     setNewName("");
