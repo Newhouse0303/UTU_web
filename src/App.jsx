@@ -25,7 +25,7 @@ const Numbers = ({ persons, handleDelete }) => {
 };
 
 const Notification = ({ message }) => {
-  if (message === "") {
+  if (message === null) {
     return null;
   }
   return <div className="message">{message}</div>;
@@ -35,7 +35,7 @@ const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState(null);
 
   const handleDelete = async (id, name) => {
     if (!window.confirm(`Delete ${name} ?`)) return;
@@ -86,6 +86,9 @@ const App = () => {
     personsService.create(personObject).then((response) => {
       setPersons(persons.concat(response.data)); // using response.data will add
       setMessage(`Added ${personObject.name}`);
+      setTimeout(() => {
+        setMessage(null);
+      }, 5000);
       setNewName("");
     });
 
@@ -106,6 +109,8 @@ const App = () => {
       <form onSubmit={addPerson}>
         <div>
           name: <input value={newName} onChange={handleNameChange} />
+        </div>
+        <div>
           number: <input value={newNumber} onChange={handleNumberChange} />
         </div>
         <div>
