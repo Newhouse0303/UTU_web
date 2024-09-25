@@ -2,6 +2,38 @@ import { useState } from "react";
 import { useEffect } from "react";
 import personsService from "./services/persons";
 
+const Header = ({ header }) => {
+  return <h2>{header}</h2>;
+};
+
+const PersonForm = ({
+  newName,
+  newNumber,
+  handleNameChange,
+  handleNumberChange,
+  addPerson,
+}) => {
+  return (
+    <form onSubmit={addPerson}>
+      <div>
+        <label>
+          name:
+          <input value={newName} onChange={handleNameChange} />
+        </label>
+      </div>
+      <div>
+        <label>
+          number:
+          <input value={newNumber} onChange={handleNumberChange} />
+        </label>
+      </div>
+      <div>
+        <button type="submit">add</button>
+      </div>
+    </form>
+  );
+};
+
 const Numbers = ({ persons, handleDelete }) => {
   return (
     <div>
@@ -10,12 +42,7 @@ const Numbers = ({ persons, handleDelete }) => {
           <span>
             {person.name} {person.number}
           </span>
-          <button
-            onClick={() => {
-              console.log(`buttons clicked for ${person.id}`);
-              handleDelete(person.id, person.name);
-            }}
-          >
+          <button onClick={() => handleDelete(person.id, person.name)}>
             delete
           </button>
         </div>
@@ -25,9 +52,7 @@ const Numbers = ({ persons, handleDelete }) => {
 };
 
 const Notification = ({ message }) => {
-  if (message === null) {
-    return null;
-  }
+  if (message === null) return;
   return <div className="message">{message}</div>;
 };
 
@@ -36,6 +61,7 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [message, setMessage] = useState(null);
+  const headers = ["Phonebook", "Numbers"];
 
   const handleDelete = async (id, name) => {
     if (!window.confirm(`Delete ${name} ?`)) return;
@@ -53,12 +79,6 @@ const App = () => {
     });
   }, []);
 
-  // useEffect(() => {
-  //   axios.get("http://localhost:3001/persons").then((response) => {
-  //     setPersons(response.data);
-  //   });
-  // }, []);
-
   const handleNameChange = (e) => {
     setNewName(e.target.value);
   };
@@ -69,7 +89,6 @@ const App = () => {
 
   const addPerson = (e) => {
     e.preventDefault();
-
     if (persons.some((person) => person.name === newName)) {
       alert(`${newName} is already added to the phonebook`);
       setNewName("");
@@ -84,40 +103,28 @@ const App = () => {
     };
 
     personsService.create(personObject).then((response) => {
-      setPersons(persons.concat(response.data)); // using response.data will add
+      setPersons(persons.concat(response.data)); // using response.data will add id
       setMessage(`Added ${personObject.name}`);
       setTimeout(() => {
         setMessage(null);
       }, 5000);
       setNewName("");
+      setNewNumber("");
     });
-
-    // axios
-    //   .post("http://localhost:3001/persons", personObject)
-    //   .then((response) => {
-    //     setPersons(persons.concat(personObject));
-    //   });
-
-    setNewName("");
-    setNewNumber("");
   };
 
   return (
     <div>
-      <h2>Phonebook</h2>
+      <Header header={headers[0]} />
       <Notification message={message} />
-      <form onSubmit={addPerson}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange} />
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNumberChange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
+      <PersonForm
+        newName={newName}
+        newNumber={newNumber}
+        handleNameChange={handleNameChange}
+        handleNumberChange={handleNumberChange}
+        addPerson={addPerson}
+      />
+      <Header header={headers[1]} />
       <Numbers persons={persons} handleDelete={handleDelete} />
     </div>
   );
