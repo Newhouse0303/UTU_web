@@ -2,20 +2,23 @@ import { useState } from "react";
 import { useEffect } from "react";
 import personsService from "./services/persons";
 
-const Numbers = ({ persons }) => {
+const Numbers = ({ persons, handleDelete }) => {
   return (
     <div>
       {persons.map((person) => (
-        <>
-          <p key={person.id}>
+        <div key={person.id}>
+          <span>
             {person.name} {person.number}
-          </p>
+          </span>
           <button
-            onClick={() => console.log(`buttons clicked for {person.name}`)}
+            onClick={() => {
+              console.log(`buttons clicked for ${person.id}`);
+              handleDelete(person.id, person.name);
+            }}
           >
             delete
           </button>
-        </>
+        </div>
       ))}
     </div>
   );
@@ -26,6 +29,18 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
 
+  const handleDelete = async (id, name) => {
+    if (!window.confirm(`Delete ${name} ?`)) return;
+    console.log(`handleDelete for ${id}`);
+    try {
+      await personsService.deleteEntry(id);
+      setPersons(persons.filter((person) => person.id !== id));
+      console.log(`Deleted person with ID: ${id}`);
+    } catch (error) {
+      console.error("Error deleting person:", error);
+    }
+  };
+
   useEffect(() => {
     personsService.getAll().then((response) => {
       setPersons(response.data);
@@ -33,13 +48,10 @@ const App = () => {
   }, []);
 
   // useEffect(() => {
-  //   console.log("effect");
   //   axios.get("http://localhost:3001/persons").then((response) => {
-  //     console.log("promise fulfilled");
   //     setPersons(response.data);
   //   });
   // }, []);
-  // console.log("render", persons.length, "persons");
 
   const handleNameChange = (e) => {
     setNewName(e.target.value);
@@ -66,7 +78,7 @@ const App = () => {
     };
 
     personsService.create(personObject).then((response) => {
-      setPersons(persons.concat(personObject));
+      setPersons(persons.concat(response.data)); // using response.data will update the id
       setNewName("");
     });
 
@@ -93,7 +105,7 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      <Numbers persons={persons} />
+      <Numbers persons={persons} handleDelete={handleDelete} />
     </div>
   );
 };
