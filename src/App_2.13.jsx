@@ -1,21 +1,15 @@
 import { useState } from "react";
 import { useEffect } from "react";
+import axios from "axios";
 import personsService from "./services/persons";
 
 const Numbers = ({ persons }) => {
   return (
     <div>
       {persons.map((person) => (
-        <>
-          <p key={person.id}>
-            {person.name} {person.number}
-          </p>
-          <button
-            onClick={() => console.log(`buttons clicked for {person.name}`)}
-          >
-            delete
-          </button>
-        </>
+        <p key={person.id}>
+          {person.name} {person.number}
+        </p>
       ))}
     </div>
   );
@@ -76,6 +70,7 @@ const App = () => {
     //     setPersons(persons.concat(personObject));
     //   });
 
+    //setPersons(persons.concat(personObject));
     setNewName("");
     setNewNumber("");
   };
