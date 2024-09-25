@@ -24,18 +24,24 @@ const Numbers = ({ persons, handleDelete }) => {
   );
 };
 
+const Notification = ({ message }) => {
+  if (message === "") {
+    return null;
+  }
+  return <div className="message">{message}</div>;
+};
+
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
+  const [message, setMessage] = useState("");
 
   const handleDelete = async (id, name) => {
     if (!window.confirm(`Delete ${name} ?`)) return;
-    console.log(`handleDelete for ${id}`);
     try {
       await personsService.deleteEntry(id);
       setPersons(persons.filter((person) => person.id !== id));
-      console.log(`Deleted person with ID: ${id}`);
     } catch (error) {
       console.error("Error deleting person:", error);
     }
@@ -78,7 +84,8 @@ const App = () => {
     };
 
     personsService.create(personObject).then((response) => {
-      setPersons(persons.concat(response.data)); // using response.data will update the id
+      setPersons(persons.concat(response.data)); // using response.data will add
+      setMessage(`Added ${personObject.name}`);
       setNewName("");
     });
 
@@ -95,6 +102,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} />
       <form onSubmit={addPerson}>
         <div>
           name: <input value={newName} onChange={handleNameChange} />
