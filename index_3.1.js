@@ -26,20 +26,14 @@ let persons = [
     }
 ]
 
+
 const PORT = 3001
 app.listen(PORT)
 console.log(`Server running on port ${PORT}`)
 
-app.get('/api/persons', (request, response) => {
+app.get('/api/persons', (response) => {
     response.json(persons)
   })
-
-app.get('/info', (request, response) => {
-    response.status(200).send(
-    `<p>Phonebook has info for ${persons.length} people</p>
-    <p>${new Date}</p>`
-    )
-})
 
 // const app = http.createServer((request, response) => {
 //   response.writeHead(200, { 'Content-Type': 'text/plain' })
