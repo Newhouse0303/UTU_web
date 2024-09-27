@@ -3,5 +3,10 @@ GET http://localhost:3001/api/persons
 ###
 GET http://localhost:3001/info
 
+### individual requests -> add id 
+GET http://localhost:3001/api/persons/1
+
+### delete -> add id
+DELETE http://localhost:3001/api/persons/1
 
 

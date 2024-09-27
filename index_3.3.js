@@ -41,7 +41,13 @@ app.get("/info", (request, response) => {
   );
 });
 
-// const app = http.createServer((request, response) => {
-//   response.writeHead(200, { 'Content-Type': 'text/plain' })
-//   response.end('Hello World')
-// })
+app.get("/api/persons/:id", (request, response) => {
+  const id = Number(request.params.id);
+  const person = persons.find((person) => person.id === id);
+
+  if (!person) {
+    return response.status(404).send(`<h3>404 - person not found</h3>`);
+  }
+
+  response.json(person);
+});
