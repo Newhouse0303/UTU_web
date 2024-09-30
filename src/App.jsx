@@ -3,62 +3,8 @@ import { useEffect } from "react";
 import personsService from "./services/persons";
 import PersonForm from "./components/Personform";
 import Numbers from "./components/Numbers";
-import Notification from "./Notification";
+import Notification from "./components/Notification";
 import Header from "./components/Header";
-
-// const Header = ({ header }) => {
-//   return <h2>{header}</h2>;
-// };
-
-// const PersonForm = ({
-//   newName,
-//   newNumber,
-//   handleNameChange,
-//   handleNumberChange,
-//   addPerson,
-// }) => {
-//   return (
-//     <form onSubmit={addPerson}>
-//       <div>
-//         <label>
-//           name:
-//           <input value={newName} onChange={handleNameChange} />
-//         </label>
-//       </div>
-//       <div>
-//         <label>
-//           number:
-//           <input value={newNumber} onChange={handleNumberChange} />
-//         </label>
-//       </div>
-//       <div>
-//         <button type="submit">add</button>
-//       </div>
-//     </form>
-//   );
-// };
-
-// const Numbers = ({ persons, handleDelete }) => {
-//   return (
-//     <div>
-//       {persons.map((person) => (
-//         <div key={person.id}>
-//           <span>
-//             {person.name} {person.number}
-//           </span>
-//           <button onClick={() => handleDelete(person.id, person.name)}>
-//             delete
-//           </button>
-//         </div>
-//       ))}
-//     </div>
-//   );
-// };
-
-// const Notification = ({ message }) => {
-//   if (message === null) return;
-//   return <div className="message">{message}</div>;
-// };
 
 const App = () => {
   const [persons, setPersons] = useState([]);
