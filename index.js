@@ -7,20 +7,6 @@ const Person = require('./models/persons');
 app.use(express.json());
 app.use(morgan('tiny'));
 
-// const password = process.argv[2];
-
-// const url = `mongodb+srv://saarauusitalo:${password}@phonebook.xdpqv.mongodb.net/phonebookDB?retryWrites=true&w=majority&appName=phonebook`;
-
-// mongoose.set('strictQuery', false);
-// mongoose.connect(url);
-
-// const personSchema = new mongoose.Schema({
-//   name: String,
-//   number: String,
-// });
-
-//const Person = mongoose.model('Person', personSchema);
-
 const PORT = process.env.PORT;
 app.listen(PORT);
 console.log(`Server running on poooooort ${PORT}`);
@@ -30,6 +16,28 @@ console.log(`Server running on poooooort ${PORT}`);
 app.get('/api/persons', (request, response) => {
   Person.find({}).then((people) => {
     response.json(people);
+  });
+});
+
+// ADD ENTRY
+
+app.post('/api/persons', (request, response) => {
+  const body = request.body;
+  console.log(body);
+
+  if (!body.name || !body.number) {
+    return response.status(400).json({
+      error: 'name or number missing',
+    });
+  }
+
+  const person = new Person({
+    name: body.name,
+    number: body.number,
+  });
+
+  person.save().then((savedPerson) => {
+    response.json(savedPerson);
   });
 });
 
@@ -61,34 +69,4 @@ app.get('/api/persons', (request, response) => {
 //   const id = Number(request.params.id);
 //   persons = persons.filter((person) => person.id !== id);
 //   response.status(204).end();
-// });
-
-// // ADD ENTRY
-
-// const generateId = () => Math.floor(Math.random() * 404) + 5;
-
-// app.post('/api/persons', (request, response) => {
-//   const body = request.body;
-//   console.log(body);
-
-//   if (!body.name || !body.number) {
-//     return response.status(400).json({
-//       error: 'name or number missing',
-//     });
-//   }
-
-//   if (persons.some((person) => person.name === body.name)) {
-//     return response.status(400).json({
-//       error: 'name must be unique',
-//     });
-//   }
-
-//   const person = {
-//     name: body.name,
-//     number: body.number,
-//     id: generateId(),
-//   };
-
-//   persons = persons.concat(person);
-//   response.json(person);
 // });
