@@ -1,29 +1,28 @@
-require('dotenv').config();
+const mongoose = require('mongoose');
 const express = require('express');
 const morgan = require('morgan');
 const app = express();
-const Person = require('./models/persons');
 
 app.use(express.json());
 app.use(morgan('tiny'));
 
-// const password = process.argv[2];
+const password = process.argv[2];
 
-// const url = `mongodb+srv://saarauusitalo:${password}@phonebook.xdpqv.mongodb.net/phonebookDB?retryWrites=true&w=majority&appName=phonebook`;
+const url = `mongodb+srv://saarauusitalo:${password}@phonebook.xdpqv.mongodb.net/phonebookDB?retryWrites=true&w=majority&appName=phonebook`;
 
-// mongoose.set('strictQuery', false);
-// mongoose.connect(url);
+mongoose.set('strictQuery', false);
+mongoose.connect(url);
 
-// const personSchema = new mongoose.Schema({
-//   name: String,
-//   number: String,
-// });
+const personSchema = new mongoose.Schema({
+  name: String,
+  number: String,
+});
 
-//const Person = mongoose.model('Person', personSchema);
+const Person = mongoose.model('Person', personSchema);
 
-const PORT = process.env.PORT;
+const PORT = 3001;
 app.listen(PORT);
-console.log(`Server running on poooooort ${PORT}`);
+console.log(`Server running on port ${PORT}`);
 
 // GET ALL ENTRIES
 
